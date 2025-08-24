@@ -121,18 +121,21 @@ public class Arvore {
 
     }
 
-    public void removerElemento(Object elemento){
+    public Node removerElemento(Object elemento){
         Node removido = null;
 
+        // verificar se a arvore está diferente de vazia!!
         if (!arvoreVazia()){
+            // aqui ele busca o nó a ser removido
             removido = buscarElemento(elemento);
-
         }
 
         if (removido != null){
             Node esquerda = removido.filho_esquerda;
             Node direita = removido.filho_direita;
             Node pai = buscarPai(elemento);
+
+            //Remoção de um Nó folha (sem filhos)
 
             if (esquerda == null && direita == null){
                 if (pai == null){
@@ -145,9 +148,63 @@ public class Arvore {
                     pai.filho_direita = null;
                 }
             }
+
+            // Nó a ser removido com dois filhos
+
+            else if (removido.filho_esquerda != null && removido.filho_direita != null ) {
+                if (pai.filho_esquerda == removido){
+                    pai.filho_esquerda = esquerda;
+
+
+                    Node auxilar = esquerda;
+                    while(auxilar.filho_esquerda != null){
+                        auxilar = auxilar.filho_esquerda;
+                    }
+                    auxilar.filho_esquerda = direita;
+                }
+
+                else if (pai.filho_direita == removido) {
+                    pai.filho_direita = direita;
+
+                    Node auxiliar = direita;
+                    while(auxiliar.filho_direita != null){
+                        auxiliar = auxiliar.filho_direita;
+                    }
+
+                    auxiliar.filho_direita = esquerda;
+                }
+            }
+
+            // Nó com apenas um filho
+            else {
+                if (pai.filho_esquerda == removido){
+                    if (esquerda == null){
+                        pai.filho_esquerda = direita;
+                    }
+                    else {
+                        pai.filho_esquerda = esquerda;
+                    }
+                }
+                else if (pai.filho_direita == removido) {
+                    if (direita == null){
+                        pai.filho_direita = esquerda;
+                    }
+                    else {
+                        pai.filho_direita = direita;
+                    }
+                }
+            }
         }
 
+        else {
+            System.out.println("Erro: Estrutura Vazia!");
+        }
+
+        return removido;
+
     }
+
+
 
 
 }
