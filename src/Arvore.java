@@ -1,5 +1,7 @@
 import javax.swing.*;
-import java.util.Stack;
+import java.io.ObjectStreamException;
+import java.util.*;
+
 public class Arvore {
 
     public Node root;
@@ -203,6 +205,95 @@ public class Arvore {
         return removido;
 
     }
+
+    public List<Object> varreduraLargura(){
+        List<Object> lista = new ArrayList<>();
+        if (arvoreVazia()){
+            return null;
+        }
+        else {
+            Queue<Node> fila = new LinkedList<>();
+            fila.add(root);
+
+            while (!fila.isEmpty()){
+                Node auxiliar = fila.poll();
+                lista.add(auxiliar.elemento);
+
+                if (auxiliar.filho_esquerda != null){
+                    fila.add(auxiliar.filho_esquerda);
+                }
+
+                if (auxiliar.filho_direita != null){
+                    fila.add(auxiliar.filho_direita);
+                }
+
+            }
+        }
+        return lista;
+    }
+
+    public List<Object> varreduraProfundidadePreOrdem(){
+        List<Object> lista = new ArrayList<>();
+
+        if (arvoreVazia()){
+            return null;
+        }
+
+        else {
+            Stack<Node> pilha = new Stack<>();
+            pilha.push(root);
+
+            while(!pilha.isEmpty()){
+                Node auxiliar = pilha.pop();
+                lista.addLast(auxiliar.elemento);
+
+                if (auxiliar.filho_direita != null){
+                    pilha.push(auxiliar.filho_direita);
+                }
+
+                if (auxiliar.filho_esquerda != null){
+                    pilha.push(auxiliar.filho_esquerda);
+                }
+            }
+        }
+
+        return lista;
+    }
+
+    public List<Object> varreduraProfundidadePosOrdem(){
+        List<Object> lista = new ArrayList<>();
+
+        if (arvoreVazia()){
+        return null;
+        }
+        else {
+            Stack<Node> pilha1 = new Stack<>();
+            Stack<Node> pilha2 = new Stack<>();
+
+
+            pilha1.push(root);
+
+            while(!pilha1.isEmpty()){
+                Node auxiliar = pilha1.pop();
+                pilha2.push(auxiliar);
+
+                if (auxiliar.filho_esquerda != null){
+                    pilha1.push(auxiliar.filho_esquerda);
+                }
+
+                if (auxiliar.filho_direita != null){
+                    pilha1.push(auxiliar.filho_direita);
+                }
+            }
+
+            while (!pilha2.isEmpty()){
+                lista.add(pilha2.pop().elemento);
+            }
+        }
+        return lista;
+    }
+
+
 
 
 
